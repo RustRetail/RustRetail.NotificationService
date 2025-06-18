@@ -1,4 +1,5 @@
-﻿using RustRetail.NotificationService.Domain.Enums;
+﻿using RustRetail.NotificationService.Domain.Constants;
+using RustRetail.NotificationService.Domain.Enums;
 using RustRetail.SharedKernel.Domain.Models;
 using System.ComponentModel.DataAnnotations;
 
@@ -15,7 +16,14 @@ namespace RustRetail.NotificationService.Domain.Entities
         public string? Footer { get; set; }
         public string? Header { get; set; }
         public string? DefaultActionLink { get; set; }
-        public NotificationType Type { get; set; } = default!;
+        [Required]
+        public NotificationCategory Category { get; set; } = NotificationCategory.Account;
+        [Required]
+        public string Subtype { get; set; } = NotificationSubtype.Account_AccountCreated;
+        [Required]
+        public NotificationChannel Channel { get; set; } = NotificationChannel.Email;
         public bool IsActive { get; set; } = true;
+
+        public ICollection<Notification> Notifications { get; set; } = [];
     }
 }

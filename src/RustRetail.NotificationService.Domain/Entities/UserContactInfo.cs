@@ -5,6 +5,8 @@ namespace RustRetail.NotificationService.Domain.Entities
 {
     public sealed class UserContactInfo : AggregateRoot<Guid>
     {
+        // Id of UserContactInfo is same as UserId in the Identity service
+
         [Required]
         public string UserName { get; set; } = string.Empty;
         [Required]

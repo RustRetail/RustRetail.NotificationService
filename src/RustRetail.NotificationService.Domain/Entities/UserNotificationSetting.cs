@@ -6,7 +6,7 @@ namespace RustRetail.NotificationService.Domain.Entities
     public sealed class UserNotificationSetting : AggregateRoot<Guid>
     {
         public Guid UserId { get; set; }
-        public NotificationType Type { get; set; } = default!;
+        public NotificationCategory Category { get; set; } = default!;
         public NotificationChannel Channel { get; set; } = default!;
         public bool IsEnabled { get; set; } = true;
     }

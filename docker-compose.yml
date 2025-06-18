@@ -1,0 +1,33 @@
+name: RustRetail_NotificationService
+services:
+  rustretail.notificationservice.api:
+    container_name: rustretail.notificationservice.api
+    image: ${DOCKER_REGISTRY-}rustretailnotificationserviceapi
+    build:
+      context: .
+      dockerfile: src/RustRetail.NotificationService.API/Dockerfile
+    depends_on:
+      rustretail.notificationservice.postgres:
+       condition: service_healthy
+    volumes:
+     - ./certs:/https:ro
+    env_file:
+     - .env
+  rustretail.notificationservice.postgres:
+    container_name: rustretail.notificationservice.postgres
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: rustretail_notificationservice
+    ports:
+      - "6544:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+     test: ["CMD", "pg_isready", "-U", "postgres"]
+     interval: 5s
+     timeout: 3s
+     retries: 5
+volumes:
+  postgres_data:

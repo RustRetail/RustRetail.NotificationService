@@ -30,7 +30,7 @@ namespace RustRetail.NotificationService.Domain.Entities
         public string? EntityType { get; set; }
 
         public ICollection<NotificationRecipient> Recipients { get; set; } = [];
-        public Guid TemplateId { get; set; }
-        public NotificationTemplate Template { get; set; } = null!;
+        public Guid? TemplateId { get; set; }
+        public NotificationTemplate? Template { get; set; }
     }
 }

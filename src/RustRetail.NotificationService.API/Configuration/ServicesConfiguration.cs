@@ -1,4 +1,6 @@
-﻿namespace RustRetail.NotificationService.API.Configuration
+﻿using RustRetail.NotificationService.API.Configuration.Json;
+
+namespace RustRetail.NotificationService.API.Configuration
 {
     internal static class ServicesConfiguration
     {
@@ -6,6 +8,7 @@
             this IServiceCollection services,
             IConfiguration configuration)
         {
+            services.AddJsonConfiguration();
 
             return services;
         }

@@ -1,4 +1,7 @@
-﻿using RustRetail.NotificationService.API.Configuration.Json;
+﻿using Microsoft.AspNetCore.Http.Features;
+using RustRetail.NotificationService.API.Configuration.Json;
+using RustRetail.NotificationService.API.Middlewares;
+using System.Diagnostics;
 
 namespace RustRetail.NotificationService.API.Configuration
 {
@@ -8,7 +11,8 @@ namespace RustRetail.NotificationService.API.Configuration
             this IServiceCollection services,
             IConfiguration configuration)
         {
-            services.AddJsonConfiguration();
+            services.AddJsonConfiguration()
+                .AddGlobalExceptionHandling();
 
             return services;
         }
@@ -19,6 +23,24 @@ namespace RustRetail.NotificationService.API.Configuration
         {
             services.AddHttpContextAccessor()
                 .AddOpenApi();
+
+            return services;
+        }
+
+        private static IServiceCollection AddGlobalExceptionHandling(
+            this IServiceCollection services)
+        {
+            services.AddExceptionHandler<GlobalExceptionHandler>();
+            services.AddProblemDetails(options =>
+            {
+                options.CustomizeProblemDetails = (context) =>
+                {
+                    context.ProblemDetails.Instance = $"{context.HttpContext.Request.Method} {context.HttpContext.Request.Path}";
+                    context.ProblemDetails.Extensions.TryAdd("requestId", context.HttpContext.TraceIdentifier);
+                    Activity? activity = context.HttpContext.Features.Get<IHttpActivityFeature>()?.Activity;
+                    context.ProblemDetails.Extensions.TryAdd("traceId", activity?.Id);
+                };
+            });
 
             return services;
         }

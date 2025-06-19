@@ -1,8 +1,12 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RustRetail.NotificationService.Domain.Repositories;
 using RustRetail.NotificationService.Persistence.Database;
+using RustRetail.NotificationService.Persistence.Repositories;
+using RustRetail.SharedKernel.Domain.Abstractions;
+using RustRetail.SharedPersistence.Database;
 using RustRetail.SharedPersistence.Interceptors;
-using Microsoft.EntityFrameworkCore;
 
 namespace RustRetail.NotificationService.Persistence
 {
@@ -15,7 +19,9 @@ namespace RustRetail.NotificationService.Persistence
             IConfiguration configuration)
         {
             services.AddInterceptors()
-                .AddDbContext(configuration);
+                .AddDbContext(configuration)
+                .AddUnitOfWork()
+                .AddRepositories();
 
             return services;
         }
@@ -38,6 +44,29 @@ namespace RustRetail.NotificationService.Persistence
             this IServiceCollection services)
         {
             services.AddScoped<DomainEventHandlingInterceptor>();
+
+            return services;
+        }
+
+        private static IServiceCollection AddUnitOfWork(
+            this IServiceCollection services)
+        {
+            services.AddScoped<INotificationUnitOfWork, NotificationUnitOfWork>();
+
+            return services;
+        }
+
+        private static IServiceCollection AddRepositories(
+            this IServiceCollection services)
+        {
+            // Generic repository
+            services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
+
+            // Custom repository
+            services.AddScoped<INotificationRepository, NotificationRepository>();
+            services.AddScoped<INotificationTemplateRepository, NotificationTemplateRepository>();
+            services.AddScoped<IUserContactInfoRepository, UserContactInfoRepository>();
+            services.AddScoped<IUserNotificationSettingRepository, UserNotificationSettingRepository>();
 
             return services;
         }

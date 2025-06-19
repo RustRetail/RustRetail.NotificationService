@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RustRetail.NotificationService.Infrastructure.ApplicationServices;
 
 namespace RustRetail.NotificationService.Infrastructure
 {
@@ -9,6 +10,7 @@ namespace RustRetail.NotificationService.Infrastructure
             this IServiceCollection services,
             IConfiguration configuration)
         {
+            services.AddApplicationServices();
 
             return services;
         }

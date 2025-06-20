@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RustRetail.NotificationService.Infrastructure.ApplicationServices;
+using RustRetail.NotificationService.Infrastructure.MessageBrokers.RabbitMQ;
 
 namespace RustRetail.NotificationService.Infrastructure
 {
@@ -11,6 +12,7 @@ namespace RustRetail.NotificationService.Infrastructure
             IConfiguration configuration)
         {
             services.AddApplicationServices();
+            services.AddRabbitMQ(configuration);
 
             return services;
         }

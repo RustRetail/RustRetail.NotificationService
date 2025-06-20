@@ -13,17 +13,18 @@ namespace RustRetail.NotificationService.Infrastructure.MessageBrokers.RabbitMQ
             services.AddMassTransit(x =>
             {
                 x.SetKebabCaseEndpointNameFormatter();
-                //x.UsingRabbitMq((context, cfg) =>
-                //{
-                //    var options = configuration.GetSection(RabbitMQOptions.SectionName).Get<RabbitMQOptions>();
-                //    ArgumentNullException.ThrowIfNull(options, nameof(options));
-                //    cfg.Host(options.Host, options.VirtualHost, h =>
-                //    {
-                //        h.Username(options.UserName);
-                //        h.Password(options.Password);
-                //    });
-                //    cfg.ConfigureEndpoints(context);
-                //});
+                x.AddConsumers(typeof(RabbitMQServiceCollectionExtensions).Assembly);
+                x.UsingRabbitMq((context, cfg) =>
+                {
+                    var options = configuration.GetSection(RabbitMQOptions.SectionName).Get<RabbitMQOptions>();
+                    ArgumentNullException.ThrowIfNull(options, nameof(options));
+                    cfg.Host(options.Host, options.VirtualHost, h =>
+                    {
+                        h.Username(options.UserName);
+                        h.Password(options.Password);
+                    });
+                    cfg.ConfigureEndpoints(context);
+                });
             });
 
             return services;

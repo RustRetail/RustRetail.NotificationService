@@ -1,6 +1,6 @@
 ﻿using MassTransit;
 using Microsoft.Extensions.Logging;
-using RustRetail.NotificationService.Contracts.IntegrationEvents.User;
+using RustRetail.SharedContracts.IntegrationEvents.V1.IdentityService.User;
 
 namespace RustRetail.NotificationService.Infrastructure.IntegrationEvents.User
 {
@@ -8,15 +8,18 @@ namespace RustRetail.NotificationService.Infrastructure.IntegrationEvents.User
         ILogger<UserRegisteredEventConsumer> logger)
         : IConsumer<UserRegisteredEvent>
     {
-        public async Task Consume(ConsumeContext<UserRegisteredEvent> context)
+        public Task Consume(ConsumeContext<UserRegisteredEvent> context)
         {
             logger.LogInformation(
-                "User registered: EventId={EventId}, OccurredOn={OccurredOn}, UserId={UserId}, UserName={UserName}, Email={Email}",
+                "User registered: EventId={@EventId}, OccurredOn={@OccurredOn}, UserId={@UserId}, UserName={@UserName}, Email={@Email}, RegisterAt={@RegisterAt}",
                 context.Message.Id,
                 context.Message.OccurredOn,
                 context.Message.UserId,
                 context.Message.UserName,
-                context.Message.Email);
+                context.Message.Email,
+                context.Message.RegisteredAt);
+
+            return Task.CompletedTask;
         }
     }
 }

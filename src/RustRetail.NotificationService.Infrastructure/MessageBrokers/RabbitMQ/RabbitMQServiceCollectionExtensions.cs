@@ -1,6 +1,7 @@
 ﻿using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RustRetail.NotificationService.Infrastructure.IntegrationEvents.User;
 
 namespace RustRetail.NotificationService.Infrastructure.MessageBrokers.RabbitMQ
 {
@@ -13,7 +14,8 @@ namespace RustRetail.NotificationService.Infrastructure.MessageBrokers.RabbitMQ
             services.AddMassTransit(x =>
             {
                 x.SetKebabCaseEndpointNameFormatter();
-                x.AddConsumers(typeof(RabbitMQServiceCollectionExtensions).Assembly);
+                x.AddConsumer<UserRegisteredEventConsumer>();
+                x.AddConsumer<UserLockedOutEventConsumer>();
                 x.UsingRabbitMq((context, cfg) =>
                 {
                     var options = configuration.GetSection(RabbitMQOptions.SectionName).Get<RabbitMQOptions>();

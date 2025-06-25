@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="RustRetail.SharedKernel" Version="1.1.0" />
+    <PackageReference Include="RustRetail.SharedKernel" Version="1.1.1" />
   </ItemGroup>
 
 </Project>

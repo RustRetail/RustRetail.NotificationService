@@ -1,4 +1,6 @@
-﻿namespace RustRetail.NotificationService.API.Configuration
+﻿using RustRetail.SharedInfrastructure.Logging.Serilog;
+
+namespace RustRetail.NotificationService.API.Configuration
 {
     internal static class ApplicationConfiguration
     {
@@ -8,6 +10,8 @@
             app.UseHttpsRedirection();
 
             app.UseExceptionHandler();
+
+            app.UseSharedSerilogRequestLogging();
 
             return app;
         }

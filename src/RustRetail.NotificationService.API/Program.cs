@@ -2,6 +2,7 @@ using RustRetail.NotificationService.API.Configuration;
 using RustRetail.NotificationService.Application;
 using RustRetail.NotificationService.Infrastructure;
 using RustRetail.NotificationService.Persistence;
+using RustRetail.SharedInfrastructure.Logging.Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,7 @@ builder.Services
     .AddPersistence(builder.Configuration)
     .AddInfrastructure(builder.Configuration)
     .AddApi(builder.Configuration);
+builder.Host.UseSharedSerilog();
 
 var app = builder.Build();
 

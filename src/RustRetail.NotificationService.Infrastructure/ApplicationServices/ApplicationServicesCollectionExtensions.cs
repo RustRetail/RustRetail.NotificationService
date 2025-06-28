@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using RustRetail.NotificationService.Application.Abstractions.Services.Core;
 using RustRetail.NotificationService.Application.Abstractions.Services.Email;
+using RustRetail.NotificationService.Infrastructure.ApplicationServices.Core;
 using RustRetail.NotificationService.Infrastructure.ApplicationServices.Email.Gmail;
 
 namespace RustRetail.NotificationService.Infrastructure.ApplicationServices
@@ -10,6 +12,7 @@ namespace RustRetail.NotificationService.Infrastructure.ApplicationServices
             this IServiceCollection services)
         {
             services.AddScoped<IEmailService, GmailEmailService>();
+            services.AddScoped<IUserContactInfoService, UserContactInfoService>();
 
             return services;
         }

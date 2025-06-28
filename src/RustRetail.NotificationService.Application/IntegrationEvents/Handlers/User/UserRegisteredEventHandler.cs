@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using RustRetail.NotificationService.Application.Abstractions.Event;
+using RustRetail.NotificationService.Application.Abstractions.Services.Core;
 using RustRetail.NotificationService.Domain.Constants;
 using RustRetail.NotificationService.Domain.Entities;
 using RustRetail.NotificationService.Domain.Enums;
@@ -9,10 +10,10 @@ using RustRetail.SharedContracts.IntegrationEvents.V1.IdentityService.User;
 namespace RustRetail.NotificationService.Application.IntegrationEvents.Handlers.User
 {
     internal class UserRegisteredEventHandler(
-        INotificationUnitOfWork unitOfWork)
+        INotificationUnitOfWork unitOfWork,
+        IUserContactInfoService contactInfoService)
         : INotificationHandler<IntegrationEventNotification<UserRegisteredEvent>>
     {
-        readonly IUserContactInfoRepository contactInfoRepository = unitOfWork.GetRepository<IUserContactInfoRepository>();
         readonly INotificationRepository notificationRepository = unitOfWork.GetRepository<INotificationRepository>();
         readonly INotificationTemplateRepository templateRepository = unitOfWork.GetRepository<INotificationTemplateRepository>();
 
@@ -20,14 +21,12 @@ namespace RustRetail.NotificationService.Application.IntegrationEvents.Handlers.
             IntegrationEventNotification<UserRegisteredEvent> notification,
             CancellationToken cancellationToken)
         {
-            // Create new user contact info
-            var userContact = new UserContactInfo()
-            {
-                Id = notification.Event.UserId,
-                UserName = notification.Event.UserName,
-                Email = notification.Event.Email,
-            };
-            await contactInfoRepository.AddAsync(userContact, cancellationToken);
+            // Handle user's contact info
+            var userContact = UserContactInfo.Create(
+                notification.Event.UserId,
+                notification.Event.UserName,
+                notification.Event.Email);
+            await contactInfoService.AddOrUpdateUserContactInfoAsync(userContact, cancellationToken);
 
             // Create notification to send welcome email to user
             var notificationMessage = new Notification()

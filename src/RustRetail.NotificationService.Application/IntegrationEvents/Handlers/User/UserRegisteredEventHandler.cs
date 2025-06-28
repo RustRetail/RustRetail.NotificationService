@@ -29,32 +29,22 @@ namespace RustRetail.NotificationService.Application.IntegrationEvents.Handlers.
             await contactInfoService.AddOrUpdateUserContactInfoAsync(userContact, cancellationToken);
 
             // Create notification to send welcome email to user
-            var notificationMessage = new Notification()
-            {
-                UserId = notification.Event.UserId.ToString(),
-                Title = "Welcome New User",
-                Message = "Welcome new user to RustRetail e-commerce platform!",
-                ActionLink = null,
-                Category = NotificationCategory.Account,
-                Subtype = NotificationSubtype.Account_AccountCreated,
-                EntityId = notification.Event.UserId,
-                EntityType = "User",
-                Recipients = new List<NotificationRecipient>()
-                {
-                    new NotificationRecipient()
-                    {
-                        UserId = notification.Event.UserId,
-                        Channel = NotificationChannel.Email,
-                        Status = NotificationStatus.Pending,
-                    }
-                }
-            };
+            var newNotification = Notification.Create(NotificationSender.NotificationSystem,
+                "Welcome New User",
+                "Welcome new user to RustRetail e-commerce platform!",
+                NotificationCategory.Account,
+                NotificationSubtype.Account_AccountCreated,
+                entityId: notification.Event.UserId,
+                entityType: "User");
+            newNotification.AddRecipients([NotificationRecipient.Create(
+                notification.Event.UserId,
+                NotificationChannel.Email)]);
             var template = await templateRepository.GetByNameAsync(NotificationTemplateName.WelcomeEmail, false, cancellationToken);
             if (template is not null)
             {
-                notificationMessage.TemplateId = template.Id;
+                newNotification.SetTemplate(template);
             }
-            await notificationRepository.AddAsync(notificationMessage, cancellationToken);
+            await notificationRepository.AddAsync(newNotification, cancellationToken);
             await unitOfWork.SaveChangesAsync(cancellationToken);
         }
     }

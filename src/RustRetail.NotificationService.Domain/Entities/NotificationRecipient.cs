@@ -20,5 +20,49 @@ namespace RustRetail.NotificationService.Domain.Entities
         [Required]
         public Guid NotificationId { get; set; }
         public Notification Notification { get; set; } = null!;
+
+        public static NotificationRecipient Create(
+            Guid userId,
+            NotificationChannel channel,
+            string? statusMessage = null)
+        {
+            if (userId == Guid.Empty)
+            {
+                throw new ArgumentException("User ID cannot be empty.", nameof(userId));
+            }
+            if (channel == null)
+            {
+                throw new ArgumentNullException(nameof(channel), "Notification channel cannot be null.");
+            }
+
+            return new NotificationRecipient()
+            {
+                UserId = userId,
+                Channel = channel,
+                Status = NotificationStatus.Pending,
+                StatusMessage = statusMessage,
+                SentAt = null,
+                DeliveredAt = null,
+                FailureCount = 0,
+                LastAttemptAt = null
+            };
+        }
+
+        public void UpdateStatus(
+            NotificationStatus status,
+            string? statusMessage = null,
+            DateTimeOffset? sentAt = null,
+            DateTimeOffset? deliveredAt = null)
+        {
+            Status = status;
+            StatusMessage = statusMessage;
+            SentAt = sentAt;
+            DeliveredAt = deliveredAt;
+            if (status == NotificationStatus.Failed)
+            {
+                FailureCount++;
+                LastAttemptAt = DateTimeOffset.UtcNow;
+            }
+        }
     }
 }

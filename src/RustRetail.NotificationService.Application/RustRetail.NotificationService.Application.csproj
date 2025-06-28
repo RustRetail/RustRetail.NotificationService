@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RustRetail.NotificationService.Contracts\RustRetail.NotificationService.Contracts.csproj" />
+    <ProjectReference Include="..\RustRetail.NotificationService.Domain\RustRetail.NotificationService.Domain.csproj" />
   </ItemGroup>
 
 </Project>

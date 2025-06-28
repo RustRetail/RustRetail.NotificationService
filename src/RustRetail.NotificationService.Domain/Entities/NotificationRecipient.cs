@@ -7,7 +7,7 @@ namespace RustRetail.NotificationService.Domain.Entities
     public sealed class NotificationRecipient : IHasKey<Guid>
     {
         public Guid Id { get; set; }
-        public Guid UserId { get; private set; }
+        public Guid UserId { get; set; }
         public NotificationChannel Channel { get; set; } = NotificationChannel.Email;
         public NotificationStatus Status { get; set; } = NotificationStatus.Pending;
         [MaxLength(1024)]

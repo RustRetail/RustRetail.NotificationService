@@ -5,6 +5,6 @@ namespace RustRetail.NotificationService.Domain.Repositories
 {
     public interface INotificationTemplateRepository : IRepository<NotificationTemplate, Guid>
     {
-        Task<NotificationTemplate?> GetByNameAsync(string name, bool asTracking = true, CancellationToken cancellationToken = default);
+        Task<NotificationTemplate?> GetByNameAsync(string name, bool isActive = true, bool asTracking = true, CancellationToken cancellationToken = default);
     }
 }

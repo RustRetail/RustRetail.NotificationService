@@ -14,6 +14,7 @@ namespace RustRetail.NotificationService.Persistence.Repositories
 
         public async Task<NotificationTemplate?> GetByNameAsync(
             string name,
+            bool isActive = true,
             bool asTracking = true,
             CancellationToken cancellationToken = default)
         {
@@ -21,7 +22,7 @@ namespace RustRetail.NotificationService.Persistence.Repositories
             query = asTracking ? query.AsTracking() : query.AsNoTracking();
 
             return await query.FirstOrDefaultAsync(
-                t => t.Name == name,
+                t => t.Name == name && t.IsActive == isActive,
                 cancellationToken);
         }
     }

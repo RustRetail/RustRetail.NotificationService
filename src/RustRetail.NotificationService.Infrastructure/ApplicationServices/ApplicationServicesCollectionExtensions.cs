@@ -13,6 +13,7 @@ namespace RustRetail.NotificationService.Infrastructure.ApplicationServices
         {
             services.AddScoped<IEmailService, GmailEmailService>();
             services.AddScoped<IUserContactInfoService, UserContactInfoService>();
+            services.AddScoped<INotificationSchedulingService, NotificationSchedulingService>();
 
             return services;
         }

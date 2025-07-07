@@ -25,5 +25,13 @@ namespace RustRetail.NotificationService.Domain.Entities
         public bool IsActive { get; set; } = true;
 
         public ICollection<Notification> Notifications { get; set; } = [];
+
+        public string RenderBodyWithUserContact(UserContactInfo userContactInfo)
+        {
+            return Body
+                .Replace("{UserName}", userContactInfo.UserName)
+                .Replace("{UserEmail}", userContactInfo.Email)
+                .Replace("{UserPhone}", userContactInfo.PhoneNumber ?? string.Empty);
+        }
     }
 }

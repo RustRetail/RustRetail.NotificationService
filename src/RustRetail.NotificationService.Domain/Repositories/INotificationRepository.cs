@@ -5,5 +5,6 @@ namespace RustRetail.NotificationService.Domain.Repositories
 {
     public interface INotificationRepository : IRepository<Notification, Guid>
     {
+        Task<IEnumerable<Notification>> GetPendingEmailNotificationsAsync(int takeSize, bool asTracking = true, CancellationToken cancellationToken = default);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using RustRetail.NotificationService.Domain.Constants;
 using RustRetail.NotificationService.Domain.Enums;
+using RustRetail.NotificationService.Domain.Events.Notification.Email;
 using RustRetail.SharedKernel.Domain.Models;
 using System.ComponentModel.DataAnnotations;
 
@@ -91,6 +92,7 @@ namespace RustRetail.NotificationService.Domain.Entities
 
             return new Notification()
             {
+                Id = Guid.NewGuid(),
                 UserId = userId,
                 Title = title,
                 Message = message,
@@ -137,6 +139,14 @@ namespace RustRetail.NotificationService.Domain.Entities
             }
             // Only set notification's template id because of ef core change tracking.
             TemplateId = template.Id;
+        }
+
+        public void SetNotificationDomainEvent(NotificationChannel channel)
+        {
+            if (channel == NotificationChannel.Email)
+            {
+                AddDomainEvent(new EmailNotificationCreatedDomainEvent(Id));
+            }
         }
     }
 }

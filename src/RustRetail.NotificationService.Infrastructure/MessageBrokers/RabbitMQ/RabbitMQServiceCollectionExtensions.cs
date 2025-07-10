@@ -1,7 +1,9 @@
 ﻿using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RustRetail.NotificationService.Infrastructure.IntegrationEvents.Notification;
 using RustRetail.NotificationService.Infrastructure.IntegrationEvents.User;
+using RustRetail.SharedApplication.Behaviors.Messaging;
 
 namespace RustRetail.NotificationService.Infrastructure.MessageBrokers.RabbitMQ
 {
@@ -16,6 +18,8 @@ namespace RustRetail.NotificationService.Infrastructure.MessageBrokers.RabbitMQ
                 x.SetKebabCaseEndpointNameFormatter();
                 x.AddConsumer<UserRegisteredEventConsumer>();
                 x.AddConsumer<UserLockedOutEventConsumer>();
+                x.AddConsumer<EmailSentSuccessfullyConsumer>();
+                x.AddConsumer<EmailSentFailedConsumer>();
                 x.UsingRabbitMq((context, cfg) =>
                 {
                     var options = configuration.GetSection(RabbitMQOptions.SectionName).Get<RabbitMQOptions>();
@@ -28,6 +32,8 @@ namespace RustRetail.NotificationService.Infrastructure.MessageBrokers.RabbitMQ
                     cfg.ConfigureEndpoints(context);
                 });
             });
+
+            services.AddScoped<IMessageBus, MassTransitMessageSender>();
 
             return services;
         }

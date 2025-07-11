@@ -10,7 +10,7 @@ namespace RustRetail.NotificationService.Infrastructure.BackgroundJobs
             this IServiceCollection services)
         {
             // Add hosted services for background jobs
-            services.AddHostedService<EmailNotificationSenderWorker>();
+            //services.AddHostedService<EmailNotificationSenderWorker>();
 
             return services;
         }

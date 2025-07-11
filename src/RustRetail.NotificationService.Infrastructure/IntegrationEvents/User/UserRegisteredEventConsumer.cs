@@ -1,6 +1,5 @@
 ﻿using MassTransit;
 using MediatR;
-using Microsoft.Extensions.Logging;
 using RustRetail.NotificationService.Application.Abstractions.Event;
 using RustRetail.SharedContracts.IntegrationEvents.V1.IdentityService.User;
 

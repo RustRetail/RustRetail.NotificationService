@@ -5,6 +5,7 @@ namespace RustRetail.NotificationService.Application.Abstractions.Services.Core
     public interface INotificationSchedulingService
     {
         Task ScheduleNotificationAsync(NotificationSchedulingOption option, CancellationToken cancellationToken = default);
+        Task ScheduleSingleRecipientEmailNotificationAsync(NotificationSchedulingOption option, Dictionary<string, object>? valuePairs = null, CancellationToken cancellationToken = default);
     }
 
     public class NotificationSchedulingOption

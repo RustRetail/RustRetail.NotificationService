@@ -1,6 +1,7 @@
 ﻿using RustRetail.NotificationService.Domain.Constants;
 using RustRetail.NotificationService.Domain.Enums;
 using RustRetail.NotificationService.Domain.Events.Notification.Email;
+using RustRetail.SharedKernel.Domain.Events.Domain;
 using RustRetail.SharedKernel.Domain.Models;
 using System.ComponentModel.DataAnnotations;
 
@@ -147,6 +148,11 @@ namespace RustRetail.NotificationService.Domain.Entities
             {
                 AddDomainEvent(new EmailNotificationCreatedDomainEvent(Id));
             }
+        }
+
+        public void SetNotificationDomainEvent(DomainEvent domainEvent)
+        {
+            AddDomainEvent(domainEvent);
         }
     }
 }

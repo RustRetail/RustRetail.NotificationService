@@ -1,23 +1,18 @@
 ﻿using MassTransit;
-using Microsoft.Extensions.Logging;
+using MediatR;
+using RustRetail.NotificationService.Application.Abstractions.Event;
 using RustRetail.SharedContracts.IntegrationEvents.V1.IdentityService.Authentication;
 
 namespace RustRetail.NotificationService.Infrastructure.IntegrationEvents.User
 {
     internal class UserLockedOutEventConsumer(
-        ILogger<UserLockedOutEventConsumer> logger)
+        IPublisher publisher)
         : IConsumer<UserLockedOutEvent>
     {
-        public Task Consume(ConsumeContext<UserLockedOutEvent> context)
+        public async Task Consume(ConsumeContext<UserLockedOutEvent> context)
         {
-            logger.LogInformation(
-                "User locked out: EventId={@EventId}, OccurredOn={@OccurredOn}, UserId={@UserId}, Duration={@Duration}",
-                context.Message.Id,
-                context.Message.OccurredOn,
-                context.Message.UserId,
-                context.Message.LockoutDurationInMilliseconds);
-
-            return Task.CompletedTask;
+            var notification = new IntegrationEventNotification<UserLockedOutEvent>(context.Message);
+            await publisher.Publish(notification, context.CancellationToken);
         }
     }
 }

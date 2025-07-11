@@ -8,6 +8,7 @@
         public const string Account_AccountDeleted = nameof(Account_AccountDeleted);
         public const string Account_EmailVerificationRequested = nameof(Account_EmailVerificationRequested);
         public const string Account_EmailVerified = nameof(Account_EmailVerified);
+        public const string Account_LockedOut = nameof(Account_LockedOut);
 
         // Order related notification subtypes
         public const string Order_OrderPlaced = nameof(Order_OrderPlaced);

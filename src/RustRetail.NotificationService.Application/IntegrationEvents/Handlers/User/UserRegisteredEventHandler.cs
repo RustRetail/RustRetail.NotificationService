@@ -35,9 +35,10 @@ namespace RustRetail.NotificationService.Application.IntegrationEvents.Handlers.
                     [notification.Event.UserId],
                     NotificationTemplateName.WelcomeEmail)
                 .SetRelatedEntity(notification.Event.UserId, "User");
-            await notificationSchedulingService.ScheduleNotificationAsync(
-                notificationSchedulingOption,
-                cancellationToken: cancellationToken);
+            //await notificationSchedulingService.ScheduleNotificationAsync(
+            //    notificationSchedulingOption,
+            //    cancellationToken: cancellationToken);
+            await notificationSchedulingService.ScheduleSingleRecipientEmailNotificationAsync(notificationSchedulingOption, cancellationToken: cancellationToken);
         }
     }
 }

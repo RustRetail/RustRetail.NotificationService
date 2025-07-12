@@ -20,6 +20,7 @@ namespace RustRetail.NotificationService.Infrastructure.MessageBrokers.RabbitMQ
                 x.AddConsumer<UserLockedOutEventConsumer>();
                 x.AddConsumer<EmailSentSuccessfullyConsumer>();
                 x.AddConsumer<EmailSentFailedConsumer>();
+                x.AddConsumer<UserUpdateProfileEventConsumer>();
                 x.UsingRabbitMq((context, cfg) =>
                 {
                     var options = configuration.GetSection(RabbitMQOptions.SectionName).Get<RabbitMQOptions>();

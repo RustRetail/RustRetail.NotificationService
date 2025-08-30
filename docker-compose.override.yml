@@ -8,6 +8,7 @@ services:
       - ASPNETCORE_Kestrel__Certificates__Default__Password=${ASPNETCORE_Kestrel__Certificates__Default__Password}
       - ConnectionStrings__NotificationDatabase=Host=rustretail.notificationservice.postgres;Port=5432;Database=rustretail_notificationservice;Username=postgres;Password=postgres
       - RabbitMQ__Host=${RabbitMQ__Host}
+      - Jwt__SecretKey=${Jwt__SecretKey}
     ports:
       - "8082:8082"
       - "8083:8083"

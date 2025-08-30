@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http.Features;
+using RustRetail.NotificationService.API.Configuration.Authentication;
+using RustRetail.NotificationService.API.Configuration.Authorization;
 using RustRetail.NotificationService.API.Configuration.Json;
 using RustRetail.NotificationService.API.Middlewares;
 using System.Diagnostics;
@@ -12,7 +14,9 @@ namespace RustRetail.NotificationService.API.Configuration
             IConfiguration configuration)
         {
             services.AddJsonConfiguration()
-                .AddGlobalExceptionHandling();
+                .AddGlobalExceptionHandling()
+                .ConfigureJwtAuthentication(configuration)
+                .ConfigureAuthorization();
 
             return services;
         }

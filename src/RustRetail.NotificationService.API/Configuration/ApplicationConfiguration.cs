@@ -12,6 +12,8 @@ namespace RustRetail.NotificationService.API.Configuration
             app.UseExceptionHandler();
 
             app.UseSharedSerilogRequestLogging();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             return app;
         }

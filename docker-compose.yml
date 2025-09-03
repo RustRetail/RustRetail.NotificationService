@@ -9,10 +9,10 @@ services:
     depends_on:
       rustretail.notificationservice.postgres:
        condition: service_healthy
-    volumes:
-     - ./certs:/https:ro
     env_file:
      - .env
+    networks:
+     - rustretail_sharednetwork
   rustretail.notificationservice.postgres:
     container_name: rustretail.notificationservice.postgres
     image: postgres:15
@@ -29,9 +29,10 @@ services:
      interval: 5s
      timeout: 3s
      retries: 5
+    networks:
+     - rustretail_sharednetwork
 volumes:
   postgres_data:
 networks:
- default:
-  external:
-   name: rustretail_sharednetwork
+ rustretail_sharednetwork:
+  external: true

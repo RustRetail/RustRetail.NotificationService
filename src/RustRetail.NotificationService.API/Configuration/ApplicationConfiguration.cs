@@ -7,10 +7,7 @@ namespace RustRetail.NotificationService.API.Configuration
         internal static WebApplication ConfigureApplicationPipeline(
             this WebApplication app)
         {
-            app.UseHttpsRedirection();
-
             app.UseExceptionHandler();
-
             app.UseSharedSerilogRequestLogging();
             app.UseAuthentication();
             app.UseAuthorization();
